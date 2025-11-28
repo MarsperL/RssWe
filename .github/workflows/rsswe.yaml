@@ -1,9 +1,9 @@
 name: 构建RSS和播客程序rsswe，定时更新订阅源
 
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
   #手动执行工作流
   workflow_dispatch:
   
