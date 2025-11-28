@@ -14,8 +14,11 @@
 
 <details>
 <summary>查看更多</summary>
-顶栏模式：
-<img width="1815" height="917" alt="image" src="" />
+| 顶栏模式-浅色模式  | 顶栏模式-暗色模式 |
+| ------------- | ------------- |
+| <img width="1815" height="917" alt="image" src="./public/img/image1.png" />  | <img width="1815" height="917" alt="image" src="./public/img/image2.png" />  |
+：
+
 
 
 </details>
