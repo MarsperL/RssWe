@@ -1,5 +1,5 @@
 <div align="center">
-
+ <img src="./public/img/favicon.png" width="72" alt="rsswe">
 
   # rsswe
 
