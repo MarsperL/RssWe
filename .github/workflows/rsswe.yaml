@@ -1,0 +1,37 @@
+name: 构建RSS和播客程序rsswe，定时更新订阅源
+
+on:
+  push:
+    branches:
+      - main
+  #手动执行工作流
+  workflow_dispatch:
+  
+  schedule:
+    - cron: "0 0 * * *"   #24点执行
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出仓库代码
+        uses: actions/checkout@v5
+
+      - name: 动态聚合订阅源，更新json数据文件
+        run: |
+          php feeds.php
+          echo -e "\033[32m订阅源聚合完成\033[m"
+          echo -e "\033[32mjson数据文件更新完成\033[m"
+
+      - name: 发布至GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: public  #构建生成的目录，默认为public
+          repository-name: username/repo   #推送仓库
+          branch: main    #推送仓库的分支
+          token: ${{ secrets.GH_PAT }} 
+
