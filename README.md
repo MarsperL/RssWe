@@ -38,7 +38,7 @@
 </details>
 
 <details>
-<summary>播客的样式和返回按钮-PC端</summary>
+<summary>播客的样式和返回顶部-PC端</summary>
 
 | ![img](./public/img/image10.png) | ![img](./public/img/image11.png) |
 |:-----------------------:|:-----------------------:|
@@ -50,7 +50,7 @@
 </details>
 
 <details>
-<summary>播客的样式和返回按钮-手机端</summary>
+<summary>播客的样式和返回顶部-手机端</summary>
 
 | ![img](./public/img/image12.png) | ![img](./public/img/image13.png) |
 |:-----------------------:|:-----------------------:|
