@@ -164,7 +164,7 @@ $postLimit = 5; // 每个订阅源获取的文章篇数
 
 ### 启用工作流
 
-在`.github/workflows/rsswe.yaml`中，取消`push`部分的注释，注释 `workflow_dispatch:`，启动工作流。
+在`.github/workflows/rsswe.yaml`中，取消`push`部分和`schedule`部分的注释，注释 `workflow_dispatch:`，启动工作流。
 
 ```yaml
 on:
@@ -173,6 +173,9 @@ on:
       - main
   #手动执行工作流
  # workflow_dispatch:
+
+  # schedule:
+  #   - cron: "0 0 * * *"   #24点执行
 ```
 
 在`发布至GitHub Pages`步骤中，添加推送仓库和对应分支即可。
