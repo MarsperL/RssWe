@@ -1,7 +1,7 @@
 <div align="center">
- <img src="./public/img/favicon.png" width="72" alt="rsswe">
+ <img src="./public/img/favicon.png" width="72" alt="RssWe">
 
-  # rsswe
+  # RssWe
 
 </div>
 
