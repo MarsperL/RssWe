@@ -1,4 +1,4 @@
-name: 构建RSS和播客程序rsswe，定时更新订阅源
+name: 构建RSS和播客程序RssWe，定时更新订阅源
 
 on:
   # push:
