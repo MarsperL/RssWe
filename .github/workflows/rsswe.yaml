@@ -7,8 +7,8 @@ on:
   #手动执行工作流
   workflow_dispatch:
   
-  schedule:
-    - cron: "0 0 * * *"   #24点执行
+  # schedule:
+  #   - cron: "0 0 * * *"   #24点执行
 
 env:
   TZ: Asia/Shanghai
