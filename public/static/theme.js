@@ -7,11 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const channelItemsContainer = document.getElementById('channel-items');
 
     let selectedChannel = '全部';
-    let allChannelsData = []; // 存储从 channels.json 加载的分类数据
+    let allChannelsData = [];
 
-    /**
-     * 从 channels.json 加载频道数据
-     */
     async function initializeChannels() {
         try {
             const response = await fetch('channels.json');
@@ -80,7 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function filterPostsByChannel() {
         posts.forEach(post => {
-            // 从HTML的 data-channel 属性获取频道名
             const channelName = post.getAttribute('data-channel');
 
             if (selectedChannel === '全部' || channelName === selectedChannel) {
@@ -106,7 +102,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
-            // 重置频道选择器
             selectedChannel = '全部';
             if (channelSearchInput) channelSearchInput.value = '关注列表';
             const customSelectContainer = document.querySelector('.custom-select-container');
