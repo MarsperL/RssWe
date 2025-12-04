@@ -14,9 +14,7 @@ if (!is_array($feeds_data) || empty($feeds_data)) {
 $postLimit = 5; //解析文章篇数
 $feeda = [];
 $feedn = 0;
-// 一个用于存储 源URL -> 频道名 的映射 
 $source_url_to_channel_map = [];
-// 用于跟踪失败的订阅源 
 $failed_feeds = [];
 $invalid_urls = [];
 
@@ -92,19 +90,16 @@ foreach ($curlHandles as $source_url => $ch) {
         $count = 0;
         $channel_name = null;
 
-        //先获取频道名
         if ($feedType === "rss") {
             $channel_name = (string) $feed->channel->title;
         } elseif ($feedType === "feed") {
             $channel_name = (string) $feed->title;
         }
 
-        // 如果能获取到频道名，就建立映射
         if ($channel_name) {
             $source_url_to_channel_map[$source_url] = $channel_name;
         }
 
-        // 解析文章 
         if ($feedType === "rss") {
             foreach ($feed->channel->item as $item) {
                 if ($count >= $postLimit) {
@@ -208,7 +203,7 @@ foreach ($curlHandles as $source_url => $ch) {
 
                 $feeda[$feedn]["link"] = $articleLink;
                 $feeda[$feedn]["title"] = (string) $entry->title;
-                $feeda[$feedn]["ch"] = $channel_name; // 使用获取到的频道名
+                $feeda[$feedn]["ch"] = $channel_name; 
                 $feeda[$feedn]["date"] = strtotime(
                     (string) ($entry->published ?? $entry->updated)
                 );
@@ -229,9 +224,7 @@ foreach ($curlHandles as $source_url => $ch) {
 curl_multi_close($mh);
 echo "\033[32m所有订阅源处理完成.\n\033[m";
 
-//  根据映射为文章填充分类
 foreach ($feeda as &$post) {
-    // 遍历原始YAML数据，找到当前文章链接属于哪个分类
     foreach ($feeds_data as $category => $urls) {
         if (in_array($post["link"], $urls)) {
             $post["category"] = $category;
@@ -240,18 +233,14 @@ foreach ($feeda as &$post) {
     }
 }
 
-// 按日期排序
 usort($feeda, fn($a, $b) => $b["date"] <=> $a["date"]);
 
-// 使用映射生成正确的频道名JSON 
 $detailed_channels_by_category = [];
 foreach ($feeds_data as $category => $urls) {
     $detailed_channels_by_category[$category] = [];
     foreach ($urls as $url) {
-        // 使用之前建立的映射，直接查找频道名
         if (isset($source_url_to_channel_map[$url])) {
             $channel_name = $source_url_to_channel_map[$url];
-            // 确保频道名不重复
             if (
                 !in_array(
                     $channel_name,
@@ -264,15 +253,14 @@ foreach ($feeds_data as $category => $urls) {
     }
 }
 
-// 生成 HTML
 $outhtml = "";
 $index = 0;
-$today_timestamp = strtotime('today midnight'); // 获取今天凌晨的时间戳
+$today_timestamp = strtotime('today midnight'); 
 foreach ($feeda as $post) {
     $isaudio = !empty($post["audio"]) ? 1 : 0;
     $channelIdentifier = htmlspecialchars($post["ch"]);
-    $is_today = ($post['date'] >= $today_timestamp);   // 判断是否为今天的文章 
-    $today_class = $is_today ? ' today' : ''; // 如果是今天，则添加 ' today' 类
+    $is_today = ($post['date'] >= $today_timestamp);   
+    $today_class = $is_today ? ' today' : ''; 
     $outhtml .= '<div class="post' . $today_class . '" data-channel="' . $channelIdentifier . '" data-category="' . htmlspecialchars($post['category']) . '" data-ts="' . $post['date'] . '" data-audio="' . $isaudio . '">';
     if (!empty($post["image"])) {
         $outhtml .= '<div class="leftpan"><img src="' . htmlspecialchars($post['image']) . '" loading="lazy"/></div>';
@@ -293,16 +281,12 @@ foreach ($feeda as $post) {
     $outhtml .= "</div></div>";
 }
 
-//保存文件
 if (!is_dir("public")) {
     mkdir("public", 0755, true);
 }
-// 保存新的、包含频道名的JSON文件
 file_put_contents("public/channels.json", json_encode($detailed_channels_by_category, JSON_UNESCAPED_UNICODE));
-// 保存文章数据
 file_put_contents("public/feed.json", json_encode($feeda, JSON_UNESCAPED_UNICODE));
 
-// 生成HTML
 $template = file_get_contents("default.html");
 if ($template) {
     $html = str_replace("<!-- posts here -->", $outhtml, $template);
@@ -320,7 +304,6 @@ if ($template) {
     echo "\033[31m错误：无法找到 left.html 模板文件。\n\033[m";
 }
 
-//输出失败的订阅源信息
 echo "\n\n--- 失败订阅源统计 ---\n";
 echo "无法加载的订阅源数量: " . count($failed_feeds) . "\n";
 if (!empty($failed_feeds)) {
